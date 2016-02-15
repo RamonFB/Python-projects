@@ -77,15 +77,17 @@ def moveFiles():
 	os.system('mv ' + text.rstrip('\n') + " " + Path_save_directory)
 
 def deleteFiles():
-	L=[]
-	x=0		#count
-	text = ""
-	indexs = List_directory.curselection()
-	con = len(indexs)
-	while (x<con):
-		text = text.rstrip("\n") + " " + List_directory.get(List_directory.curselection()[x])
-		x=x+1
-	os.system('rm -R' + text.rstrip('\n'))
+	answer = tkMessageBox.askquestion("Esborrar","Estas segur d'esborrar-ho?")
+	if(answer == "yes"):
+		L=[]
+		x=0		#count
+		text = ""
+		indexs = List_directory.curselection()
+		con = len(indexs)
+		while (x<con):
+			text = text.rstrip("\n") + " " + List_directory.get(List_directory.curselection()[x])
+			x=x+1
+		os.system('rm -R' + text.rstrip('\n'))
 
 def selectAll():
 	List_directory.selection_set(0, END)
