@@ -60,10 +60,32 @@ def copyFiles():
 	con = len(indexs)
 	Path_save_directory = (tkFileDialog.askdirectory())
 	while (x<con):
-		text = text + List_directory.get(List_directory.curselection()[x])
+		text = text.rstrip("\n") + " " + List_directory.get(List_directory.curselection()[x])#rstrip delete newLine
 		x=x+1
-	os.system('cp ' + text.rstrip('\n') + " " + Path_save_directory)
-	print ('cp ' + text.rstrip('\n') + " " + Path_save_directory)
+	os.system('cp -R ' + text.rstrip('\n') + " " + Path_save_directory)
+
+def moveFiles():
+	L=[]
+	x=0		#count
+	text = ""
+	indexs = List_directory.curselection()
+	con = len(indexs)
+	Path_save_directory = (tkFileDialog.askdirectory())
+	while (x<con):
+		text = text.rstrip("\n") + " " + List_directory.get(List_directory.curselection()[x])
+		x=x+1
+	os.system('mv ' + text.rstrip('\n') + " " + Path_save_directory)
+
+def deleteFiles():
+	L=[]
+	x=0		#count
+	text = ""
+	indexs = List_directory.curselection()
+	con = len(indexs)
+	while (x<con):
+		text = text.rstrip("\n") + " " + List_directory.get(List_directory.curselection()[x])
+		x=x+1
+	os.system('rm -R' + text.rstrip('\n'))
 
 def selectAll():
 	List_directory.selection_set(0, END)
@@ -113,8 +135,8 @@ Button_All = Button(f5,text="Tots",command=selectAll).pack(side = TOP,anchor=W)
 Button_None = Button(f5,text="Cap",command=deselectAll).pack(side=TOP,anchor=W)
 Label_Selected = Label(f5,text="Als seleccionats:").pack(side=TOP,anchor=W)
 Button_Copy = Button(f5,text="Copiar",command=copyFiles).pack(side=TOP,anchor=W)
-Button_Move = Button(f5,text="Moure").pack(side=TOP,anchor=W)
-Button_Delete = Button(f5,text="Esborrar").pack(side=TOP,anchor=W)
+Button_Move = Button(f5,text="Moure",command=moveFiles).pack(side=TOP,anchor=W)
+Button_Delete = Button(f5,text="Esborrar",command=deleteFiles).pack(side=TOP,anchor=W)
 Button_Rename = Button(f5,text="Renombrar").pack(side=TOP,anchor=W)
 f5.pack(side=TOP,anchor=E)
 
