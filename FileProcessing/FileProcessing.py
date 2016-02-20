@@ -9,7 +9,11 @@ window=Tk()
 window.title("Tractament de fitxers")
 window.minsize(600,500)
 ment = StringVar(value = "*.*")
+ment2 = StringVar()
+ment3 = StringVar()
+
 List = []
+
 
 def work_directory():
 	work_directory=(tkFileDialog.askdirectory())#save the path where the files are saved
@@ -46,14 +50,15 @@ def hideNoSelected():
 
 def hideSelected():
     items = List_directory.curselection()
+
     pos = 0
     for i in items :
         idx = int(i) - pos
         List_directory.delete(idx,idx)
         pos = pos + 1
 
+
 def copyFiles():
-	L=[]
 	x=0		#count
 	text = ""
 	indexs = List_directory.curselection()
@@ -61,11 +66,10 @@ def copyFiles():
 	Path_save_directory = (tkFileDialog.askdirectory())
 	while (x<con):
 		text = text.rstrip("\n") + " " + List_directory.get(List_directory.curselection()[x])#rstrip delete newLine
-		x=x+1
+	x += 1
 	os.system('cp -R ' + text.rstrip('\n') + " " + Path_save_directory)
 
 def moveFiles():
-	L=[]
 	x=0		#count
 	text = ""
 	indexs = List_directory.curselection()
@@ -73,24 +77,46 @@ def moveFiles():
 	Path_save_directory = (tkFileDialog.askdirectory())
 	while (x<con):
 		text = text.rstrip("\n") + " " + List_directory.get(List_directory.curselection()[x])
-		x=x+1
+		x += 1
 	os.system('mv ' + text.rstrip('\n') + " " + Path_save_directory)
 
 def deleteFiles():
-	answer = tkMessageBox.askquestion("Esborrar","Estas segur d'esborrar-ho?")
+	answer = tkMessageBox.askquestion("Esborrar Fitxers","Vols esborrar els fitxers seleccionats?")
 	if(answer == "yes"):
-		L=[]
 		x=0		#count
 		text = ""
 		indexs = List_directory.curselection()
 		con = len(indexs)
 		while (x<con):
 			text = text.rstrip("\n") + " " + List_directory.get(List_directory.curselection()[x])
-			x=x+1
+			x += 1
 		os.system('rm -R' + text.rstrip('\n'))
+
+def wRename():
+	windowRename=Tk()
+	windowRename.title("Patros de renombrament")
+	windowRename.minsize(50,50)
+	labelModify = Label(windowRename,text="Modifica substring: ").pack(side=LEFT,anchor=W)
+	mEntry = Entry(windowRename,textvariable = ment2).pack(side=LEFT)
+	labelModify2 = Label(windowRename,text="a: ").pack(side=LEFT,anchor=W)
+	mEntry = Entry(windowRename,textvariable = ment3).pack(side=LEFT)
+	Button_Rename = Button(windowRename,text="Renombrar").pack(side=LEFT,anchor=W)
+	windowRename.mainloop()
+
+def rename():
+	text = ment2.get()
+	print text
+	res = filter(lambda k: text in k,List)
+	print res
+	x=0		#count
+	text = ""
+	indexs = List_directory.curselection()
+	con = len(indexs)
+	#while (x<con):
 
 def selectAll():
 	List_directory.selection_set(0, END)
+
 
 def deselectAll():
 	List_directory.selection_clear(0,END)
@@ -139,7 +165,7 @@ Label_Selected = Label(f5,text="Als seleccionats:").pack(side=TOP,anchor=W)
 Button_Copy = Button(f5,text="Copiar",command=copyFiles).pack(side=TOP,anchor=W)
 Button_Move = Button(f5,text="Moure",command=moveFiles).pack(side=TOP,anchor=W)
 Button_Delete = Button(f5,text="Esborrar",command=deleteFiles).pack(side=TOP,anchor=W)
-Button_Rename = Button(f5,text="Renombrar").pack(side=TOP,anchor=W)
+Button_Rename = Button(f5,text="Renombrar", command=wRename).pack(side=TOP,anchor=W)
 f5.pack(side=TOP,anchor=E)
 
 window.mainloop()
